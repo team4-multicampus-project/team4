@@ -75,8 +75,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",  # engine: mysql
+        "NAME": "rdstest",  # DB Name
+        "USER": "admin",  # DB User
+        "PASSWORD": "rdstest123",  # Password
+        "HOST": "rdstest.cpa0spimmjj8.us-east-2.rds.amazonaws.com",  # 생성한 데이터베이스 엔드포인트
+        "PORT": "3306",  # 데이터베이스 포트
+        "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
     }
 }
 
