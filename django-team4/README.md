@@ -1,4 +1,5 @@
 proto 1<br>
+python 3.11.1<br>
 가상환경 세팅 방법<hr>
 cmd 터미널에 입력<br>
 > python -m venv venv<br>
