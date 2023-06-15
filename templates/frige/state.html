@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+
+{% block content%}
+{% if drinkLst %}
+    <div class = "row">
+        {% for drink in drinkLst %} <!--냉장고 재고 목록-->
+            <div class="card" style="width: 50rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{drink.name}}</h5> <!-- 주류 명 -->
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> <!-- 주류 정보(양, 등등)-->
+                    <div class = "quantity">
+                        <span class = "count">
+                            <a href = "#" class = "minus">-</a>
+                            <span id = "result">{{drink.quantity}}</span> <!--주류갯수-->
+                            <a href = "#" class = "plus">+</a>
+                        </span>    
+                    </div>
+                </div>
+            </div>
+        {% endfor %} <!--drinkLst for-->
+    </div> <!--card row-->
+{% endif %}
+{% endblock content%}
+
+{%block script%}
+<script type = "text/javascript">
+    let plus = document.querySelector(".plus")
+    let minus = document.querySelector(".minus")
+    let result = document.querySelector("#result")
+    let result_int = Number(result.textContent)
+
+    plus.addEventListener("click", () => {
+        result_int++
+        result.textContent = result_int.toLocaleString();
+    })
+    minus.addEventListener("click", () => {
+        if (result_int > 0) {
+            result_int--
+            result.textContent = result_int.toLocaleString();
+        }
+    })
+</script>
+{%endblock script%}
