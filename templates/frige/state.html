@@ -10,9 +10,9 @@
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> <!-- 주류 정보(양, 등등)-->
                     <div class = "quantity">
                         <span class = "count">
-                            <a href = "#" class = "minus">-</a>
+                            <a href = "#" class = "minus" data-uri="{% url 'frige:plus_quantity' %}">-</a>
                             <span id = "result">{{item.quantity}}</span> <!--주류갯수-->
-                            <a href = "#" class = "plus">+</a>
+                            <a href = "#" class = "plus" data-uri="{% url 'frige:minus_quantity' %}">+</a>
                         </span>    
                     </div>
                 </div>
@@ -32,11 +32,14 @@
     plus.addEventListener("click", () => {
         result_int++
         result.textContent = result_int.toLocaleString();
+        location.href = $(this).data('uri');
     })
+
     minus.addEventListener("click", () => {
         if (result_int > 0) {
             result_int--
             result.textContent = result_int.toLocaleString();
+            location.href = $(this).data('uri');
         }
     })
 </script>
