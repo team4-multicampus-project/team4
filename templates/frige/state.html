@@ -1,17 +1,17 @@
 {% extends 'base.html' %} 
 
 {% block content%}
-{% if drinkLst %}
+{% if itemLst %}
     <div class = "row">
-        {% for drink in drinkLst %} <!--냉장고 재고 목록-->
+        {% for item in itemLst %} <!--냉장고 재고 목록-->
             <div class="card" style="width: 50rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{drink.name}}</h5> <!-- 주류 명 -->
+                    <h5 class="card-title">{{item.drink.name}}</h5> <!-- 주류 명 -->
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> <!-- 주류 정보(양, 등등)-->
                     <div class = "quantity">
                         <span class = "count">
                             <a href = "#" class = "minus">-</a>
-                            <span id = "result">{{drink.quantity}}</span> <!--주류갯수-->
+                            <span id = "result">{{item.quantity}}</span> <!--주류갯수-->
                             <a href = "#" class = "plus">+</a>
                         </span>    
                     </div>
