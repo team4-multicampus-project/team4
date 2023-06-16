@@ -1,11 +1,10 @@
 from django.shortcuts import render
-from frige.models import FrigeItem
+from frige.models import Frige, FrigeItem
 
-# Create your views here.
+# 냉장고 state.html
 def refrigerator_state(request):
-    itemLst = FrigeItem.objects.order_by('drink')
-
+    friges = Frige.objects.all()
     context = {
-        'itemLst' : itemLst
+        'friges': friges
     }
     return render(request, 'frige/state.html', context)

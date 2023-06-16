@@ -3,17 +3,22 @@ from .models import Frige, Drink, FrigeItem
     
 class DrinkAdmin(admin.ModelAdmin):
     search_fields = ['id']
-    list_display = ['id', 'name', 'ml']
+    list_display = ['user','id', 'name','ml']
     ordering = ['id']
     
 class FrigeAdmin(admin.ModelAdmin):
     search_fields = ['id']
-    list_display = ['id', 'name', 'user', 'drink', 'created_at']
+    list_display = ['user','id', 'name', 'get_drinks', 'created_at']
     ordering = ['id']
+    
+    def get_drinks(self, obj):
+        return ", ".join([str(item.drink) for item in obj.items.all()])
+    get_drinks.short_description = 'Drinks'
+
     
 class FrigeItemAdmin(admin.ModelAdmin):
     search_fields = ['frige']
-    list_display = ['frige', 'drink', 'quantity', 'user']
+    list_display = ['user','frige', 'drink', 'quantity']
     ordering = ['frige']
     
 admin.site.register(Frige, FrigeAdmin)
