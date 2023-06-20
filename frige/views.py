@@ -19,8 +19,6 @@ def handle_quantity(request):
         
         frige_id, drink, quan = data.split("/")
         print(frige_id, drink, quan)
-        frige_id = frige_id[-1]
-        drink = drink[1:]
         
         for item in frigeItems:
             if item.frige.id == int(frige_id) and item.drink.name == drink:
