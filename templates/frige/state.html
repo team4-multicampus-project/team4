@@ -1,46 +1,92 @@
 {% extends 'base.html' %} 
 
-{% block content%}
-{% if itemLst %}
-    <div class = "row">
-        {% for item in itemLst %} <!--냉장고 재고 목록-->
+{% block content %}
+{% if friges %}
+    <div class="row">
+        <!-- 냉장고 테이블 목록 -->
+        {% for frige in friges %}
             <div class="card" style="width: 50rem;">
                 <div class="card-body">
-                    <h5 class="card-title">{{item.drink.name}}</h5> <!-- 주류 명 -->
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> <!-- 주류 정보(양, 등등)-->
-                    <div class = "quantity">
-                        <span class = "count">
-                            <a href = "#" class = "minus" data-uri="{% url 'frige:plus_quantity' %}">-</a>
-                            <span id = "result">{{item.quantity}}</span> <!--주류갯수-->
-                            <a href = "#" class = "plus" data-uri="{% url 'frige:minus_quantity' %}">+</a>
-                        </span>    
-                    </div>
+                    <h5 id = "frige_id" class="card-title">Refrigerator {{ frige.id }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ frige.name }}</h6>
+                    <ul>
+                        <!-- 냉장고 품목 (이름 + 수량) -->
+                        {% for item in frige.items.all %}
+                            <li>
+                                <p id = "drink_name"> {{item.drink.name}}</p>
+                                {% comment %} {{ item.drink.name }} - Quantity: <span class="result" data-item-id="{{ item.id }}">{{ item.quantity }}</span> {% endcomment %}
+                                <div class="quantity">
+                                    <span class="count">
+                                        <a href="#" class="minus" data-item-id="{{ item.id }}">-</a>
+                                        <span id="result" data-item-id="{{ item.id }}">{{ item.quantity }}</span>
+                                        <a href="#" class="plus" data-item-id="{{ item.id }}">+</a>
+                                    </span>    
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-        {% endfor %} <!--drinkLst for-->
-    </div> <!--card row-->
+        {% endfor %}
+    </div>
 {% endif %}
-{% endblock content%}
+{% endblock content %}
 
 {%block script%}
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type = "text/javascript">
     let plus = document.querySelector(".plus")
     let minus = document.querySelector(".minus")
     let result = document.querySelector("#result")
-    let result_int = Number(result.textContent)
+    let drink = document.querySelector("#drink_name")
+    let frige_id = document.querySelector("#frige_id")
+    {% comment %} let result = $("#result").val();
+    let drink = $("#drink_name").val();
+    let frige_id = $("#frige_id").val(); {% endcomment %}
+    let result_int = Number(result.textContent);
 
     plus.addEventListener("click", () => {
+        let data = frige_id.textContent + "/" + drink.textContent + "/"
+
         result_int++
-        result.textContent = result_int.toLocaleString();
-        location.href = $(this).data('uri');
-    })
+        data += result_int;
+        console.log(data);
+        
+        $.ajax({
+            type:'POST',
+            url:"http://127.0.0.1:8000/frige/quantity/",
+            data:JSON.stringify(data),
+            success:function(json){
+                console.log("data pass success",json);
+                result.innerHTML = result_int.toLocaleString();
+            },
+            error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); 
+            }
+        });
+    });
 
     minus.addEventListener("click", () => {
         if (result_int > 0) {
+            let data = frige_id.textContent + "/" + drink.textContent + "/"
+
             result_int--
-            result.textContent = result_int.toLocaleString();
-            location.href = $(this).data('uri');
+            data += result_int;
+            console.log(data);
+        
+            $.ajax({
+                type:'POST',
+                url:"http://127.0.0.1:8000/frige/quantity/",
+                data:JSON.stringify(data),
+                success:function(json){
+                    console.log("data pass success",json);
+                    result.innerHTML = result_int.toLocaleString();
+                },
+                error : function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText); 
+                }
+            });
         }
-    })
+    });
 </script>
 {%endblock script%}

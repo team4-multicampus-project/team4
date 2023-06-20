@@ -1,6 +1,6 @@
 proto 1<br>
-python 3.11.1<br>
-가상환경 세팅 방법<hr>
+python 3.11.1 <hr>
+가상환경 세팅 방법<br>
 cmd 터미널에 입력<br>
 > python -m venv venv<br>
 > venv\Scripts\activate<br>
