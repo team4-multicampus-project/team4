@@ -17,9 +17,13 @@
                                 {% comment %} {{ item.drink.name }} - Quantity: <span class="result" data-item-id="{{ item.id }}">{{ item.quantity }}</span> {% endcomment %}
                                 <div class="quantity">
                                     <span class="count">
+                                        <!--
                                         <a href="#" class="minus" data-item-id="{{ item.id }}">-</a>
                                         <span id="result" data-item-id="{{ item.id }}">{{ item.quantity }}</span>
-                                        <a href="#" class="plus" data-item-id="{{ item.id }}">+</a>
+                                        <a href="#" class="plus" data-item-id="{{ item.id }}">+</a>-->
+                                        <a href="#" id="minus/{{item.id}}" data-item-id="{{ item.id }}" onclick = "handle_quantity(this)">-</a>
+                                        <span id="{{item.id}}" class="result" data-item-id="{{ item.id }}" value = "{{frige.id}}/{{item.drink.name}}/">{{ item.quantity }}</span>
+                                        <a href="#" id="plus/{{item.id}}" data-item-id="{{ item.id }}" onclick = "handle_quantity(this)">+</a>
                                     </span>    
                                 </div>
                             </li>
@@ -35,17 +39,42 @@
 {%block script%}
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type = "text/javascript">
-    let plus = document.querySelector(".plus")
-    let minus = document.querySelector(".minus")
-    let result = document.querySelector("#result")
-    let drink = document.querySelector("#drink_name")
-    let frige_id = document.querySelector("#frige_id")
-    {% comment %} let result = $("#result").val();
-    let drink = $("#drink_name").val();
-    let frige_id = $("#frige_id").val(); {% endcomment %}
-    let result_int = Number(result.textContent);
+    var drinks = document.querySelectorAll(".result");
 
-    plus.addEventListener("click", () => {
+    function handle_quantity(e) {
+        var doc = document.getElementById(e.getAttribute('id')).getAttribute('id');
+        var op = doc.split("/")[0];
+        var result_id = doc.split("/")[1];
+        var data = ""
+
+        for (var i = 0; i < drinks.length; i++) {
+            if (Number(drinks[i].id) == Number(result_id)) {
+                var result = drinks[i];
+                var result_int = Number(result.textContent);
+
+                if (op == "minus") result_int--;
+                else result_int++;
+                data = drinks[i].getAttribute("value") + result_int;
+                
+                $.ajax({
+                    type:'POST',
+                    url:"http://127.0.0.1:8000/frige/quantity/",
+                    data:JSON.stringify(data),
+                    success:function(json){
+                        console.log("data pass success",json);
+                        result.innerHTML = result_int.toLocaleString();
+                    },
+                    error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText); 
+                    }
+                });
+            }
+        }
+        /*
+        let result = result_doc.value;
+        let result_int = Number(result);*/
+    }
+    {% comment %} plus.addEventListener("click", () => {
         let data = frige_id.textContent + "/" + drink.textContent + "/"
 
         result_int++
@@ -87,6 +116,6 @@
                 }
             });
         }
-    });
+    }); {% endcomment %}
 </script>
 {%endblock script%}

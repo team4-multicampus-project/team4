@@ -25,7 +25,7 @@ def handle_quantity(request):
         for item in frigeItems:
             if item.frige.id == int(frige_id) and item.drink.name == drink:
                 item.quantity = quan
-                print(f"Drink : {item.drink.name}, Quan : {item.quantity}")
                 item.save()
+                print(f"Drink : {item.drink.name}, Quan : {item.quantity}")
         
         return redirect("frige:frige_state")
