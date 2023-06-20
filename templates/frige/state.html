@@ -70,52 +70,6 @@
                 });
             }
         }
-        /*
-        let result = result_doc.value;
-        let result_int = Number(result);*/
     }
-    {% comment %} plus.addEventListener("click", () => {
-        let data = frige_id.textContent + "/" + drink.textContent + "/"
-
-        result_int++
-        data += result_int;
-        console.log(data);
-        
-        $.ajax({
-            type:'POST',
-            url:"http://127.0.0.1:8000/frige/quantity/",
-            data:JSON.stringify(data),
-            success:function(json){
-                console.log("data pass success",json);
-                result.innerHTML = result_int.toLocaleString();
-            },
-            error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); 
-            }
-        });
-    });
-
-    minus.addEventListener("click", () => {
-        if (result_int > 0) {
-            let data = frige_id.textContent + "/" + drink.textContent + "/"
-
-            result_int--
-            data += result_int;
-            console.log(data);
-        
-            $.ajax({
-                type:'POST',
-                url:"http://127.0.0.1:8000/frige/quantity/",
-                data:JSON.stringify(data),
-                success:function(json){
-                    console.log("data pass success",json);
-                    result.innerHTML = result_int.toLocaleString();
-                },
-                error : function(xhr,errmsg,err) {
-                console.log(xhr.status + ": " + xhr.responseText); 
-                }
-            });
-        }
-    }); {% endcomment %}
 </script>
 {%endblock script%}
